@@ -10,9 +10,7 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
-    <!-- include style.css -->
     <link rel="stylesheet" href="style.css" />
-    <!-- fa fa-search -->
     <script
       src="https://kit.fontawesome.com/2c36e9b7b1.js"
       crossorigin="anonymous"
@@ -33,12 +31,10 @@
         </a>
       </div>
     </nav>
-    <!-- ADD search in center -->
     <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="search-box text-center">
-            <!-- run Onpressed when pressed enter on input text field -->
             <input
               type="text"
               id="keyword"
@@ -50,7 +46,6 @@
             </button>
           </div>
         </div>
-        <!-- Show table when search button is clicked -->
         <div class="col-md-12">
           <div class="table-responsive" id="table">
             <table class="table table-bordered table-striped">
@@ -75,6 +70,28 @@
       crossorigin="anonymous"
     ></script>
     <script>
+        function sortTable() {
+          var table, rows, switching, i, x, y, shouldSwitch;
+          table = document.getElementById("table-body");
+          switching = true;
+          while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 0; i < rows.length - 1; i++) {
+              shouldSwitch = false;
+              x = rows[i].getElementsByTagName("TD")[3];
+              y = rows[i + 1].getElementsByTagName("TD")[3];
+              if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                shouldSwitch = true;
+                break;
+              }
+            }
+            if (shouldSwitch) {
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+            }
+          }
+        }
         const Onpressed = () => {
             const keyword = document.getElementById("keyword").value;
             fetch("coursea_data.csv")
@@ -106,6 +123,7 @@
                 });
             });
         };
+        setInterval(sortTable, 100);
         const text_field = document.getElementById("keyword");
         text_field
         .addEventListener("keyup", function (event) {
