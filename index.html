@@ -92,6 +92,44 @@
             }
           }
         }
+        function sortTable2() {
+          var table, rows, switching, i, x, y, shouldSwitch;
+          table = document.getElementById("table-body");
+          switching = true;
+          while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 0; i < rows.length - 1; i++) {
+              shouldSwitch = false;
+              x = rows[i].getElementsByTagName("TD")[5];
+              y = rows[i + 1].getElementsByTagName("TD")[5];
+              var x1 = x.innerHTML;
+              var y1 = y.innerHTML;
+              if (x1.includes("k")) {
+                x1 = x1.replace("k", "");
+                x1 = Number(x1) * 1000;
+              } else if (x1.includes("m")) {
+                x1 = x1.replace("m", "");
+                x1 = Number(x1) * 1000000;
+              }
+              if (y1.includes("k")) {
+                y1 = y1.replace("k", "");
+                y1 = Number(y1) * 1000;
+              } else if (y1.includes("m")) {
+                y1 = y1.replace("m", "");
+                y1 = Number(y1) * 1000000;
+              }
+              if (x1 < y1 && rows[i].getElementsByTagName("TD")[3].innerHTML == rows[i+1].getElementsByTagName("TD")[3].innerHTML) {
+                shouldSwitch = true;
+                break;
+              }
+            }
+            if (shouldSwitch) {
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+            }
+          }
+        } 
         const Onpressed = () => {
             const keyword = document.getElementById("keyword").value;
             fetch("coursea_data.csv")
@@ -124,6 +162,7 @@
             });
         };
         setInterval(sortTable, 100);
+        setInterval(sortTable2, 100);
         const text_field = document.getElementById("keyword");
         text_field
         .addEventListener("keyup", function (event) {
